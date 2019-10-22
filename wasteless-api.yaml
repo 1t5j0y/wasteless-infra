@@ -1,0 +1,25 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: "WastelessAPI"
+schemes:
+  - https
+paths:
+  "/add-point":
+    options:
+      description: "Handling CORS for the add-point API"
+      responses:
+        200:
+    post:
+      description: "Add a new point to the wasteless map"
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: "The point was added successfully"
+      x-amazon-apigateway-integration:
+        uri: ${add_point_lambda_arn}
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+
