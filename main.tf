@@ -9,8 +9,8 @@ resource "aws_lambda_function" "add-point" {
   runtime = "nodejs10.x"
   memory_size = 128
   role = "${aws_iam_role.lambda-iam-role.arn}"
-  # s3_bucket = ""
-  # s3_key = ""
+  s3_bucket = "${var.s3_bucket}"
+  s3_key = "deploy/lambda/add-point/20191023.zip"
   tags = {
     project = "${var.project}"
   }
