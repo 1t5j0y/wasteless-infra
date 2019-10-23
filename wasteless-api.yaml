@@ -1,36 +1,60 @@
-swagger: '2.0'
+openapi: "3.0.1"
 info:
-  version: '1.0'
   title: "WastelessAPI"
-schemes:
-  - https
+  version: '1.0'
 paths:
-  "/add-point":
+  /add-point:
     options:
       description: "Handling CORS for the add-point API"
       responses:
         200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         responses:
-          statusCode: "200",
-          responseParameters:
-              method.response.header.Access-Control-Allow-Headers : "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Correlation-ID'",
-              method.response.header.Access-Control-Allow-Methods : "'POST'",
-              method.response.header.Access-Control-Allow-Origin": "'*'"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
-        passthroughBehavior: "when_no_match"
-        type: "mock"     
+        type: "mock"
     post:
       description: "Add a new point to the wasteless map"
-      consumes:
-        - application/json
       responses:
         200:
-          description: "The point was added successfully"
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-integration:
         uri: ${add_point_lambda_arn}
+        responses:
+          default:
+            statusCode: "200"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
         type: "aws_proxy"
-
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"

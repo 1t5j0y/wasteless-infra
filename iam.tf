@@ -32,7 +32,10 @@ resource "aws_iam_role_policy" "s3-lambda-policy" {
       "Action": [
         "s3:GetObject", "s3:PutObject"
       ],
-      "Resource": "arn:aws:s3:::${var.s3_bucket}" 
+      "Resource": [
+        "arn:aws:s3:::${var.s3_bucket}",
+        "arn:aws:s3:::${var.s3_bucket}/*"
+      ] 
     }
   ]
 }
