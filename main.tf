@@ -11,7 +11,9 @@ resource "aws_lambda_function" "add-point" {
   role = "${aws_iam_role.lambda-iam-role.arn}"
   # s3_bucket = ""
   # s3_key = ""
-  
+  tags = {
+    project = "${var.project}"
+  }
 }
 
 resource "aws_lambda_permission" "api-gateway-invoke-lambda" {
@@ -29,7 +31,6 @@ resource "aws_api_gateway_rest_api" "wasteless-api-gateway" {
   name = "WastelessAPI"
   description = "Wasteless Map APIs"
   body = "${data.template_file.wasteless-api-swagger.rendered}"
-  
 }
 
 data "template_file" "wasteless-api-swagger" {

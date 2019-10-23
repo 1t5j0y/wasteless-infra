@@ -10,6 +10,17 @@ paths:
       description: "Handling CORS for the add-point API"
       responses:
         200:
+      x-amazon-apigateway-integration:
+        responses:
+          statusCode: "200",
+          responseParameters:
+              method.response.header.Access-Control-Allow-Headers : "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Correlation-ID'",
+              method.response.header.Access-Control-Allow-Methods : "'POST'",
+              method.response.header.Access-Control-Allow-Origin": "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"     
     post:
       description: "Add a new point to the wasteless map"
       consumes:
