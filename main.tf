@@ -14,6 +14,18 @@ resource "aws_lambda_function" "add-point" {
   tags = {
     project = "${var.project}"
   }
+  environment {
+    variables = {
+      S3_BUCKET = "goa-waste-eco-map",
+      POINTS_DATA_FILE_PATH = "datafiles/goa_waste_eco_map_points.json"
+    }
+  }
+  depends_on = ["aws_iam_role_policy_attachment.lambda_logs"]
+}
+
+resource "aws_cloudwatch_log_group" "lambda_cloudwatch_log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.add-point.function_name}"
+  retention_in_days = 14
 }
 
 resource "aws_lambda_permission" "api-gateway-invoke-lambda" {
